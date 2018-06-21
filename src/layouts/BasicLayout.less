@@ -1,0 +1,112 @@
+@import '~antd/lib/style/themes/default.less';
+
+.header, .content, .footer {
+  padding: 0;
+  > div {
+    margin: auto;
+  }
+}
+
+.screen-xl {
+  .header, .content, .footer {
+    > div {
+      width: 1200px;
+    }
+  }
+}
+
+.screen-lg {
+  .header, .content, .footer {
+    > div {
+      padding: 0 20px;
+    }
+  }
+}
+
+.screen-md {
+  .header, .content, .footer {
+    > div {
+      padding: 0 15px;
+    }
+  }
+}
+
+.screen-sm {
+  .header, .content, .footer {
+    > div {
+      padding: 0 12px;
+    }
+  }
+}
+
+.screen-xs {
+  .header, .content, .footer {
+    > div {
+      padding: 0 12px;
+    }
+  }
+}
+
+.header {
+  background: white;
+  .menu {
+    line-height: 64px;
+  }
+  .right {
+    float: right;
+    height: 100%;
+    .action {
+      cursor: pointer;
+      padding: 0 12px;
+      display: inline-block;
+      transition: all 0.3s;
+      height: 100%;
+      > i {
+        font-size: 16px;
+        vertical-align: middle;
+        color: @text-color;
+      }
+      &:hover,
+      &:global(.ant-popover-open) {
+        background: @primary-1;
+      }
+    }
+    .search {
+      padding: 0;
+      margin: 0 12px;
+      &:hover {
+        background: transparent;
+      }
+    }
+    .account {
+      .avatar {
+        margin: 20px 8px 20px 0;
+        color: @primary-color;
+        background: rgba(255, 255, 255, 0.85);
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+}
+
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(0, 0, 0, .2);
+  margin: 16px 24px 16px 0;
+  float: left;
+  &:before {
+    content: "BLOG";
+    text-align: center;
+    display: block;
+    height: 31px;
+    line-height: 31px;
+    color: white;
+    font-weight: bold;
+  }
+}

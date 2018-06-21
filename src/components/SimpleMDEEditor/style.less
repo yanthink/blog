@@ -1,0 +1,63 @@
+@import '~antd/lib/style/themes/default.less';
+
+:global {
+  .CodeMirror {
+    pre {
+      font-size: 16px;
+      line-height: 30px;
+    }
+    .CodeMirror-code {
+      .cm-header-1,
+      .cm-header-2,
+      .cm-header-3,
+      .cm-header-4,
+      .cm-header-5,
+      .cm-header-6,
+      .cm-comment {
+        color: @primary-color;
+      }
+
+      .cm-comment {
+        background: none;
+      }
+    }
+  }
+
+  .markdown-body,
+  .editor-preview-side,
+  .editor-preview-active-side {
+    font-size: 16px;
+    background: white;
+    padding: 30px;
+    overflow: auto;
+
+    :not(pre) > code[class*="language-"],
+    pre[class*="language-"] {
+      background: rgba(54, 56, 58, 0.98);
+    }
+
+    code {
+      border: 1px solid #e4e4e4;
+    }
+
+    img:not(.emoji) {
+      margin-left: 0;
+      max-width: 100%;
+    }
+
+    blockquote {
+      > :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    hr {
+      background: none;
+      height: auto;
+      border: 2px dashed #f0f4f6;
+      border-bottom: none;
+      margin: 18px auto;
+      width: 50%;
+    }
+  }
+}
