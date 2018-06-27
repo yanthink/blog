@@ -17,6 +17,12 @@
 - 用户管理 -- 列表、添加、修改、分配角色；
 - debugbar;
 
+## 后台截图
+![file](https://api.einsition.com/storage/screenshot/WX20180627-175615.png)
+![file](https://api.einsition.com/storage/screenshot/WX20180627-175640.png)
+![file](https://api.einsition.com/storage/screenshot/WX20180627-175811.png)
+![file](https://api.einsition.com/storage/screenshot/WX20180627-175828.png)
+
 ## 开发环境部署/安装
 
 本项目代码使用 React 框架 [ANT DESIGN PRO](https://pro.ant.design/index-cn) 开发。
