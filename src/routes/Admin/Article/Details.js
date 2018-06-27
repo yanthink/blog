@@ -4,58 +4,13 @@ import { Link } from 'dva/router';
 import { Button, Icon, Spin, Tag } from 'antd';
 import { get } from 'lodash';
 import marked from 'marked';
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-okaidia.css';
-import loadLanguages from 'prismjs/components/index';
+import Prism from 'utils/prism';
 import PageHeaderLayout from 'layouts/Admin/PageHeaderLayout';
 import DescriptionList from 'components/DescriptionList/index';
 import 'components/SimpleMDEEditor/markdown.less';
 import 'components/SimpleMDEEditor/style.less';
 import { queryArticleDetails } from 'services/Admin/api';
 import styles from './Details.less';
-
-loadLanguages([
-  'markup',
-  'css',
-  'javascript',
-  'aspnet',
-  'bash',
-  'c',
-  'csharp',
-  'cpp',
-  'coffeescript',
-  'docker',
-  'git',
-  'go',
-  'http',
-  'ini',
-  'java',
-  'json',
-  'kotlin',
-  'less',
-  'markdown',
-  'nginx',
-  'objectivec',
-  'perl',
-  'php',
-  'php-extras',
-  'plsql',
-  'powershell',
-  'python',
-  'jsx',
-  'tsx',
-  'ruby',
-  'sass',
-  'scss',
-  'sql',
-  'stylus',
-  'swift',
-  'typescript',
-  'vbnet',
-  'vim',
-  'visual-basic',
-  'yaml',
-]);
 
 const { Description } = DescriptionList;
 
@@ -147,7 +102,7 @@ export default class ArticleDetails extends PureComponent {
                   dangerouslySetInnerHTML={{ // eslint-disable-line
                     __html: marked(
                       article.content,
-                      // { breaks: true },
+                      { breaks: true },
                     ),
                   }}
                 />

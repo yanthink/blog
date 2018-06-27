@@ -1,57 +1,12 @@
 import React, { PureComponent } from 'react';
 import cookie from 'cookie';
 import marked from 'marked';
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-okaidia.css';
-import loadLanguages from 'prismjs/components/index';
+import Prism from 'utils/prism';
 import { Form, Input, Select, Button, Radio, Modal, Icon, Upload, message } from 'antd';
 import SimpleMDEEditor from 'components/SimpleMDEEditor/index';
 import { getAuthorization, getToken } from 'utils/authority';
 import { queryAllTags, addTags } from 'services/Admin/api';
 import styles from './Form.less';
-
-loadLanguages([
-  'markup',
-  'css',
-  'javascript',
-  'aspnet',
-  'bash',
-  'c',
-  'csharp',
-  'cpp',
-  'coffeescript',
-  'docker',
-  'git',
-  'go',
-  'http',
-  'ini',
-  'java',
-  'json',
-  'kotlin',
-  'less',
-  'markdown',
-  'nginx',
-  'objectivec',
-  'perl',
-  'php',
-  'php-extras',
-  'plsql',
-  'powershell',
-  'python',
-  'jsx',
-  'tsx',
-  'ruby',
-  'sass',
-  'scss',
-  'sql',
-  'stylus',
-  'swift',
-  'typescript',
-  'vbnet',
-  'vim',
-  'visual-basic',
-  'yaml',
-]);
 
 const FormItem = Form.Item;
 const { Option } = Select;
