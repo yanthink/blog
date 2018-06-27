@@ -40,7 +40,7 @@ export default class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = '我的的网络日志';
+    let title = '我的网络日志';
     let currRouterData = null;
     // match params path
     Object.keys(routerData).forEach(key => {
@@ -49,7 +49,7 @@ export default class BasicLayout extends React.PureComponent {
       }
     });
     if (currRouterData && currRouterData.name) {
-      title = `${currRouterData.name} - 我的的网络日志`;
+      title = `${currRouterData.name} - 我的网络日志`;
     }
     return title;
   }

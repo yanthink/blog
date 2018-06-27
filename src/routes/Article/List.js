@@ -176,7 +176,7 @@ export default class ArticleList extends PureComponent {
     );
 
     return (
-      <DocumentTitle title="文章列表 - 黄思盛的网络日志">
+      <DocumentTitle title="文章列表 - 我的网络日志">
         <Fragment>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>
@@ -242,12 +242,12 @@ export default class ArticleList extends PureComponent {
                     }
                     description={
                       <span>
-                      {article.tags.map(tag => (
-                        <Link key={tag.id} to={`/article/list?tags[0]=${tag.id}`}>
-                          <Tag>{tag.name}</Tag>
-                        </Link>
-                      ))}
-                    </span>
+                        {article.tags.map(tag => (
+                          <Link key={tag.id} to={`/article/list?tags[0]=${tag.id}`}>
+                            <Tag>{tag.name}</Tag>
+                          </Link>
+                        ))}
+                      </span>
                     }
                   />
                   <ListContent data={article} />

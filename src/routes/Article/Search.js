@@ -124,8 +124,7 @@ export default class ArticleSearch extends PureComponent {
                 (
                   <span
                     key={key}
-                    dangerouslySetInnerHTML={{
-                      // eslint-disable-line
+                    dangerouslySetInnerHTML={{ // eslint-disable-line
                       __html: html,
                     }}
                   />
@@ -150,7 +149,7 @@ export default class ArticleSearch extends PureComponent {
     );
 
     return (
-      <DocumentTitle title="文章列表 - 黄思盛的网络日志">
+      <DocumentTitle title="文章列表 - 我的网络日志">
         <Fragment>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>
@@ -191,8 +190,7 @@ export default class ArticleSearch extends PureComponent {
                             (
                               <span
                                 key={key}
-                                dangerouslySetInnerHTML={{
-                                  // eslint-disable-line
+                                dangerouslySetInnerHTML={{ // eslint-disable-line
                                   __html: html,
                                 }}
                               />

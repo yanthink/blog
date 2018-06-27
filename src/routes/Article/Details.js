@@ -36,7 +36,7 @@ export default class ArticleDetails extends PureComponent {
     const { article } = this.state;
 
     return (
-      <DocumentTitle title={`${article.title || ''} - 黄思盛的网络日志`}>
+      <DocumentTitle title={`${article.title || ''} - 我的网络日志`}>
         <Fragment>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>
