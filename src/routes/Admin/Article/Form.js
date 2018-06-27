@@ -160,7 +160,7 @@ export default class ArticleForm extends PureComponent {
         autosave: {
           enabled: true,
           delay: 5000,
-          // unique_id: `article_content_${formData.id}`,
+          unique_id: `article_content_${formData.id}`,
         },
         renderingConfig: {
           // codeSyntaxHighlighting: true,

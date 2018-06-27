@@ -33,7 +33,7 @@
 
 克隆 `blog` 源代码到本地：
 
-    > git clone git@github.com:yanthink/blog.git
+    > git clone https://github.com/yanthink/blog.git
 
 #### 2. 安装扩展包依赖
 ```shell
