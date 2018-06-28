@@ -13,13 +13,13 @@ const { Option } = Select;
 
 const uploadUrl = '/api/admin/attachment/upload';
 
-function getBase64(img, callback) {
+function getBase64 (img, callback) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 
-function beforeUpload(file) {
+function beforeUpload (file) {
   // const isJPG = file.type === 'image/jpeg';
   // if (!isJPG) {
   //   message.error('You can only upload JPG file!');
@@ -42,12 +42,12 @@ export default class ArticleForm extends PureComponent {
     previewUploading: false,
   };
 
-  async componentWillMount() {
+  async componentWillMount () {
     const { data: allTags } = await queryAllTags();
     this.setState({ allTags });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (!this.state.previewBase64 && nextProps.formData.preview) {
       this.setState({ previewBase64: nextProps.formData.preview });
     }
@@ -59,6 +59,9 @@ export default class ArticleForm extends PureComponent {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         onSubmit(values);
+        if (this.simplemde) {
+          this.simplemde.clearAutosavedValue();
+        }
       }
     });
   };
@@ -102,8 +105,8 @@ export default class ArticleForm extends PureComponent {
           },
           () => {
             setFieldsValue({ preview: info.file.response.data.filename });
-          }
-        )
+          },
+        ),
       );
     }
   };
@@ -120,7 +123,7 @@ export default class ArticleForm extends PureComponent {
     return html;
   };
 
-  render() {
+  render () {
     const { form, formData, submitLoading } = this.props;
     const { getFieldDecorator } = form;
     const { previewBase64 } = this.state;
@@ -151,6 +154,9 @@ export default class ArticleForm extends PureComponent {
     const editorProps = {
       options: {
         // see https://github.com/sparksuite/simplemde-markdown-editor#configuration
+        getMdeInstance: simplemde => {
+          this.simplemde = simplemde
+        },
         mode: 'markdown',
         spellChecker: false,
         lineNumbers: false,
@@ -160,7 +166,7 @@ export default class ArticleForm extends PureComponent {
         autosave: {
           enabled: true,
           delay: 5000,
-          unique_id: `article_content_${formData.id}`,
+          unique_id: `article_content_${formData.id ? formData.id : '0'}`,
         },
         renderingConfig: {
           // codeSyntaxHighlighting: true,
@@ -187,10 +193,10 @@ export default class ArticleForm extends PureComponent {
           '|',
           {
             name: 'guide',
-            action() {
+            action () {
               const win = window.open(
                 'https://github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md',
-                '_blank'
+                '_blank',
               );
               if (win) {
                 // Browser has allowed it to be opened
@@ -235,7 +241,7 @@ export default class ArticleForm extends PureComponent {
               <Radio.Group>
                 <Radio value={1}>显示</Radio>
                 <Radio value={0}>隐藏</Radio>
-              </Radio.Group>
+              </Radio.Group>,
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="标签">
@@ -254,7 +260,7 @@ export default class ArticleForm extends PureComponent {
                     {tag.name}
                   </Option>
                 ))}
-              </Select>
+              </Select>,
             )}
             <a onClick={this.toggleddTagsModalVisible}>添加标签</a>
           </FormItem>
@@ -279,7 +285,7 @@ export default class ArticleForm extends PureComponent {
                 ) : (
                   uploadButton
                 )}
-              </Upload>
+              </Upload>,
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="内容">

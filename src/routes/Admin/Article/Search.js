@@ -105,7 +105,7 @@ export default class ArticleSearch extends PureComponent {
   };
 
   render () {
-    const { adminArticle: { data }, loading } = this.props;
+    const { adminArticle: { data, pagination }, loading } = this.props;
     const { search } = this.state;
 
     const IconText = ({ type, text }) => (
@@ -124,8 +124,7 @@ export default class ArticleSearch extends PureComponent {
                 (
                   <span
                     key={key}
-                    dangerouslySetInnerHTML={{
-                      // eslint-disable-line
+                    dangerouslySetInnerHTML={{ // eslint-disable-line
                       __html: html,
                     }}
                   />
@@ -160,7 +159,7 @@ export default class ArticleSearch extends PureComponent {
           </Link>
         }
       >
-        <Card title={`关于 “${search.keyword}” 的搜索结果`} bordered={false}>
+        <Card title={`关于 “${search.keyword}” 的搜索结果, 共 ${pagination.total} 条`} bordered={false}>
           <List
             size="large"
             loading={loading.effects['adminArticle/fetch']}

@@ -6,9 +6,8 @@ import { Breadcrumb, Icon, Spin, Tag } from 'antd';
 import { get } from 'lodash';
 import marked from 'marked';
 import Prism from 'utils/prism';
-import 'components/SimpleMDEEditor/markdown.less';
-import 'components/SimpleMDEEditor/style.less';
 import { queryArticleDetails } from 'services/api';
+import 'components/SimpleMDEEditor/style.less';
 import styles from './Details.less';
 
 @connect(({ article, loading }) => ({ article, loading }))

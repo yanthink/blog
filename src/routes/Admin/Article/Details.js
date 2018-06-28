@@ -7,9 +7,8 @@ import marked from 'marked';
 import Prism from 'utils/prism';
 import PageHeaderLayout from 'layouts/Admin/PageHeaderLayout';
 import DescriptionList from 'components/DescriptionList/index';
-import 'components/SimpleMDEEditor/markdown.less';
-import 'components/SimpleMDEEditor/style.less';
 import { queryArticleDetails } from 'services/Admin/api';
+import 'components/SimpleMDEEditor/style.less';
 import styles from './Details.less';
 
 const { Description } = DescriptionList;
@@ -20,7 +19,7 @@ export default class ArticleDetails extends PureComponent {
     article: {},
   };
 
-  async componentWillMount() {
+  async componentWillMount () {
     const { data: article } = await queryArticleDetails(this.props.match.params.id, {
       include: 'author,tags',
     });
@@ -31,7 +30,7 @@ export default class ArticleDetails extends PureComponent {
       },
       () => {
         Prism.highlightAllUnder(this.markdownDomNode);
-      }
+      },
     );
   }
 
@@ -39,7 +38,7 @@ export default class ArticleDetails extends PureComponent {
     this.markdownDomNode = domNode;
   };
 
-  render() {
+  render () {
     const { loading } = this.props;
     const { article } = this.state;
 
@@ -55,11 +54,11 @@ export default class ArticleDetails extends PureComponent {
         <Description term="更新时间">{article.updated_at}</Description>
         <Description term="标签">
           {article.tags &&
-            article.tags.map(tag => (
-              <Link key={tag.id} to={`/admin/article/list?tags[0]=${tag.id}`}>
-                <Tag>{tag.name}</Tag>
-              </Link>
-            ))}
+          article.tags.map(tag => (
+            <Link key={tag.id} to={`/admin/article/list?tags[0]=${tag.id}`}>
+              <Tag>{tag.name}</Tag>
+            </Link>
+          ))}
         </Description>
       </DescriptionList>
     );

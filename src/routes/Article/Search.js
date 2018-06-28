@@ -105,7 +105,7 @@ export default class ArticleSearch extends PureComponent {
   };
 
   render () {
-    const { article: { data }, loading } = this.props;
+    const { article: { data, pagination }, loading } = this.props;
     const { search } = this.state;
 
     const IconText = ({ type, text }) => (
@@ -157,7 +157,7 @@ export default class ArticleSearch extends PureComponent {
             </Breadcrumb.Item>
             <Breadcrumb.Item>文章列表</Breadcrumb.Item>
           </Breadcrumb>
-          <Card title={`关于 “${search.keyword}” 的搜索结果`} bordered={false}>
+          <Card title={`关于 “${search.keyword}” 的搜索结果, 共 ${pagination.total} 条`} bordered={false}>
             <List
               size="large"
               loading={loading.effects['article/fetch']}

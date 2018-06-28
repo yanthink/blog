@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import SimpleMDE from 'simplemde';
 import inlineAttachment from './plugins/inlineAttachment';
-import './simplemde.less';
-import './markdown.less';
 import './style.less';
 
 export default class SimpleMDEEditor extends PureComponent {
@@ -10,12 +8,12 @@ export default class SimpleMDEEditor extends PureComponent {
     keyChange: false,
   };
 
-  componentWillMount() {
+  componentWillMount () {
     this.id = this.props.id || `simplemde-editor-${Date.now()}`;
     this.wrapperId = `${this.id}-wrapper`;
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (typeof window !== 'undefined') {
       this.createEditor();
       this.addEvents();
@@ -25,13 +23,13 @@ export default class SimpleMDEEditor extends PureComponent {
       if (this.props.uploadOptions) {
         inlineAttachment.editors.codemirror4.attach(
           this.simplemde.codemirror,
-          this.props.uploadOptions
+          this.props.uploadOptions,
         );
       }
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (!this.state.keyChange && nextProps && nextProps.value !== this.simplemde.value()) {
       this.simplemde.value((nextProps && nextProps.value) || '');
     }
@@ -41,7 +39,7 @@ export default class SimpleMDEEditor extends PureComponent {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.removeEvents();
   }
 
@@ -107,7 +105,7 @@ export default class SimpleMDEEditor extends PureComponent {
     }
   };
 
-  render() {
+  render () {
     return (
       <div id={this.wrapperId} className={this.props.className}>
         {this.props.label && <label htmlFor={this.id}> {this.props.label} </label>}
