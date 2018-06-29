@@ -58,10 +58,16 @@ export default class ArticleForm extends PureComponent {
     const { form, onSubmit } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        onSubmit(values);
-        if (this.simplemde) {
-          this.simplemde.clearAutosavedValue();
-        }
+        onSubmit({
+          ...values,
+          callback: () => {
+            if (this.simplemde && this.simplemde.autosaveTimeoutId) {
+              clearTimeout(this.simplemde.autosaveTimeoutId);
+              this.simplemde.autosaveTimeoutId = undefined;
+              this.simplemde.clearAutosavedValue();
+            }
+          },
+        });
       }
     });
   };
@@ -124,7 +130,7 @@ export default class ArticleForm extends PureComponent {
   };
 
   render () {
-    const { form, formData, submitLoading } = this.props;
+    const { form, formData, submitLoading, dataLoaded } = this.props;
     const { getFieldDecorator } = form;
     const { previewBase64 } = this.state;
 
@@ -152,11 +158,11 @@ export default class ArticleForm extends PureComponent {
       </div>
     );
     const editorProps = {
+      getMdeInstance: simplemde => {
+        this.simplemde = simplemde;
+      },
       options: {
         // see https://github.com/sparksuite/simplemde-markdown-editor#configuration
-        getMdeInstance: simplemde => {
-          this.simplemde = simplemde
-        },
         mode: 'markdown',
         spellChecker: false,
         lineNumbers: false,
@@ -164,9 +170,9 @@ export default class ArticleForm extends PureComponent {
         matchBrackets: false,
         forceSync: true,
         autosave: {
-          enabled: true,
+          enabled: dataLoaded,
           delay: 5000,
-          unique_id: `article_content_${formData.id ? formData.id : '0'}`,
+          uniqueId: dataLoaded ? `article_content` : undefined,
         },
         renderingConfig: {
           // codeSyntaxHighlighting: true,
@@ -295,7 +301,7 @@ export default class ArticleForm extends PureComponent {
             })(<SimpleMDEEditor {...editorProps} />)}
           </FormItem>
           <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-            <Button type="primary" htmlType="submit" loading={submitLoading}>
+            <Button type="primary" htmlType="submit" loading={submitLoading} disabled={!dataLoaded}>
               提交
             </Button>
           </FormItem>

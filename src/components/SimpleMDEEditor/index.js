@@ -21,10 +21,26 @@ export default class SimpleMDEEditor extends PureComponent {
       this.getCursor();
       this.getMdeInstance();
       if (this.props.uploadOptions) {
+        const self = this;
+        const { onFileUploaded } = this.props.uploadOptions;
+        const options = {
+          ...this.props.uploadOptions,
+          onFileUploaded (filename) {
+            self.props.onChange(self.simplemde.value());
+            if (typeof onFileUploaded === 'function') {
+              onFileUploaded.call(this, filename);
+            }
+          },
+        };
+
         inlineAttachment.editors.codemirror4.attach(
           this.simplemde.codemirror,
-          this.props.uploadOptions,
+          options,
         );
+      }
+
+      if (this.simplemde.value() && this.simplemde.value() !== this.props.value) {
+        this.props.onChange(this.simplemde.value());
       }
     }
   }
@@ -41,6 +57,11 @@ export default class SimpleMDEEditor extends PureComponent {
 
   componentWillUnmount () {
     this.removeEvents();
+
+    if (this.simplemde && this.simplemde.autosaveTimeoutId) {
+      clearTimeout(this.simplemde.autosaveTimeoutId);
+      this.simplemde.autosaveTimeoutId = undefined;
+    }
   }
 
   getCursor = () => {

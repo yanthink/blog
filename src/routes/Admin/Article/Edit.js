@@ -12,9 +12,11 @@ export default class ArticleEdit extends PureComponent {
     formData: {
       status: 1,
     },
+    dataLoaded: false,
   };
 
-  async componentWillMount() {
+  async componentWillMount () {
+    this.setState({ dataLoaded: false });
     const { data: { tags, ...article } } = await queryArticleDetails(this.props.match.params.id, {
       include: 'tags',
     });
@@ -23,20 +25,27 @@ export default class ArticleEdit extends PureComponent {
         ...article,
         tags: tags.map(tag => tag.id),
       },
+      dataLoaded: true,
     });
   }
 
-  render() {
+  render () {
     const { loading, dispatch } = this.props;
+    const { formData, dataLoaded } = this.state;
     const formProps = {
-      formData: this.state.formData,
+      formData,
       submitLoading: loading.effects['adminArticle/update'],
-      onSubmit: payload => {
+      dataLoaded,
+      onSubmit: data => {
+        const { callback, ...payload } = data;
         dispatch({
           type: 'adminArticle/update',
           id: this.props.match.params.id,
           payload,
-          callback() {
+          callback () {
+            if (typeof callback === 'function') {
+              callback();
+            }
             message.success('更新成功');
             dispatch(routerRedux.push('/admin/article/list'));
           },

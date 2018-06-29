@@ -11,19 +11,25 @@ export default class ArticleCreate extends PureComponent {
     formData: {
       status: 1,
     },
+    dataLoaded: true,
   };
 
-  render() {
+  render () {
     const { loading, dispatch } = this.props;
-    const { formData } = this.state;
+    const { formData, dataLoaded } = this.state;
     const formProps = {
       formData,
       submitLoading: loading.effects['adminArticle/add'],
-      onSubmit(payload) {
+      dataLoaded,
+      onSubmit (data) {
+        const { callback, ...payload } = data;
         dispatch({
           type: 'adminArticle/add',
           payload,
-          callback() {
+          callback () {
+            if (typeof callback === 'function') {
+              callback();
+            }
             message.success('添加成功');
             dispatch(routerRedux.push('/admin/article/list'));
           },
