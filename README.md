@@ -2,7 +2,7 @@
 
 * 产品名称：个人博客系统前端
 * 项目代号：blog
-* 官方地址：https://www.einsition.com
+* 演示地址：https://www.einsition.com
 * api项目地址：https://github.com/yanthink/blog-api
 
 该系统使用 ANT DESIGN PRO 编写而成。

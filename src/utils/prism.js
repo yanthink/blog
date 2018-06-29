@@ -13,6 +13,7 @@ loadLanguages([
   'less',
   'markdown',
   'php',
+  'php-extras',
   'python',
   'jsx',
   'tsx',
