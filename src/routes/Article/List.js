@@ -18,6 +18,7 @@ import { get } from 'lodash';
 import TagSelect from 'components/TagSelect';
 import StandardFormRow from 'components/StandardFormRow';
 import Ellipsis from 'components/Ellipsis';
+import { getDateDiff } from 'utils/utils';
 import { queryAllTags } from 'services/api';
 import styles from './List.less';
 
@@ -32,7 +33,7 @@ const loadMorePage = 0;
 @Form.create()
 @connect(({ article, loading }) => ({ article, loading }))
 export default class ArticleList extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
     const { location: { search } } = this.props;
     const query = parse(search.substr(1));
@@ -43,14 +44,14 @@ export default class ArticleList extends PureComponent {
     };
   }
 
-  async componentWillMount() {
+  async componentWillMount () {
     this.handleSearch();
 
     const { data: allTags } = await queryAllTags();
     this.setState({ allTags });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.location.search !== this.props.location.search) {
       const { location: { search } } = nextProps;
       const query = parse(search.substr(1));
@@ -145,32 +146,30 @@ export default class ArticleList extends PureComponent {
     );
   };
 
-  render() {
+  render () {
     const { form, article: { data }, loading } = this.props;
     const { getFieldDecorator } = form;
-
-    const IconText = ({ type, text }) => (
-      <span>
-        <Icon type={type} style={{ marginRight: 8 }} />
-        {text}
-      </span>
-    );
 
     const ListContent = ({ data: article }) => (
       <div className={styles.listContent}>
         <Ellipsis className={styles.description} lines={3}>{article.description}</Ellipsis>
         <div className={styles.extra}>
-          <Avatar size="small" icon="user" />
-          <Link to={`/article/list?author_id=${get(article, 'author.id')}`}>
+          <Link style={{ color: 'inherit' }} to={`/article/list?author_id=${get(article, 'author.id')}`}>
+            <Icon type="user" style={{ marginRight: 4 }} />
             {get(article, 'author.name')}
           </Link>
-          &nbsp;&nbsp;发布在&nbsp;&nbsp;
-          <Link to={`/article/${article.id}/details`}>
-            {window.location.hostname}
-            {window.location.port === 80 ? '' : `:${window.location.port}`}
-            {`/article/${article.id}/details`}
-          </Link>
-          <em>{article.updated_at}</em>
+          <span style={{ marginLeft: 12 }}>
+            <Icon type="clock-circle-o" style={{ marginRight: 4 }} />
+            {getDateDiff(article.created_at)}
+          </span>
+          <span style={{ marginLeft: 12 }}>
+            <Icon type="eye-o" style={{ marginRight: 4 }} />
+            {article.current_read_count}
+          </span>
+          <a style={{ color: 'inherit', marginLeft: 12 }}>
+            <Icon type="message" style={{ marginRight: 4 }} />
+            {0}
+          </a>
         </div>
       </div>
     );
@@ -220,11 +219,6 @@ export default class ArticleList extends PureComponent {
               renderItem={article => (
                 <List.Item
                   key={article.id}
-                  actions={[
-                    <IconText type="star-o" text={999} />,
-                    <IconText type="like-o" text={999} />,
-                    <IconText type="message" text={999} />,
-                  ]}
                   extra={
                     <div className={styles.listItemExtra}>
                       {article.preview && <img src={article.preview} alt="预览" />}
@@ -242,6 +236,7 @@ export default class ArticleList extends PureComponent {
                     }
                     description={
                       <span>
+                        <Icon type="tags-o" style={{ marginRight: 4 }} />
                         {article.tags.map(tag => (
                           <Link key={tag.id} to={`/article/list?tags[0]=${tag.id}`}>
                             <Tag>{tag.name}</Tag>

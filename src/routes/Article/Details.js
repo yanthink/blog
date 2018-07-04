@@ -9,6 +9,7 @@ import Prism from 'utils/prism';
 import { queryArticleDetails } from 'services/api';
 import 'components/SimpleMDEEditor/style.less';
 import styles from './Details.less';
+import { getDateDiff } from '../../utils/utils';
 
 @connect(({ article, loading }) => ({ article, loading }))
 export default class ArticleDetails extends PureComponent {
@@ -49,17 +50,29 @@ export default class ArticleDetails extends PureComponent {
           <div className={styles.header}>
             <h1>{article.title}</h1>
             <div className={styles.meta}>
-              <Link to={`/article/list?author_id=${get(article, 'author.id')}`}>
+              <Link style={{ color: 'inherit' }} to={`/article/list?author_id=${get(article, 'author.id')}`}>
                 {get(article, 'author.name')}
               </Link>
-              &nbsp;&nbsp;
-              <span>{article.updated_at}</span>
-              &nbsp;&nbsp;
-              {article.tags && article.tags.map(tag => (
-                <Link key={tag.id} to={`/article/list?tags[0]=${tag.id}`}>
-                  <Tag>{tag.name}</Tag>
-                </Link>
-              ))}
+              <span style={{ margin: '0 6px' }}>⋅</span>
+              <span>
+                于
+                <Icon type="clock-circle-o" style={{ margin: '0 4px' }} />
+                {getDateDiff(article.created_at)}
+              </span>
+              <span style={{ margin: '0 6px' }}>⋅</span>
+              <span>
+                <Icon type="eye-o" style={{ marginRight: 4 }} />
+                {article.current_read_count} 阅读
+              </span>
+              <span style={{ margin: '0 6px' }}>⋅</span>
+              <span>
+                <Icon type="tags-o" style={{ marginRight: 4 }} />
+                {article.tags && article.tags.map(tag => (
+                  <Link key={tag.id} to={`/article/list?tags[0]=${tag.id}`}>
+                    <Tag>{tag.name}</Tag>
+                  </Link>
+                ))}
+              </span>
             </div>
           </div>
           <div ref={this.handleRefMount} className={`${styles.content} markdown-body`}>

@@ -1,10 +1,10 @@
 import moment from 'moment';
 
-export function fixedZero(val) {
+export function fixedZero (val) {
   return val * 1 < 10 ? `0${val}` : val;
 }
 
-export function getTimeDistance(type) {
+export function getTimeDistance (type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
@@ -52,7 +52,7 @@ export function getTimeDistance(type) {
   }
 }
 
-export function getPlainNode(nodeList, parentPath = '') {
+export function getPlainNode (nodeList, parentPath = '') {
   const arr = [];
   nodeList.forEach(node => {
     const item = node;
@@ -70,7 +70,7 @@ export function getPlainNode(nodeList, parentPath = '') {
   return arr;
 }
 
-export function digitUppercase(n) {
+export function digitUppercase (n) {
   const fraction = ['角', '分'];
   const digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
   const unit = [['元', '万', '亿'], ['', '拾', '佰', '仟']];
@@ -96,7 +96,7 @@ export function digitUppercase(n) {
     .replace(/^整$/, '零元整');
 }
 
-function getRelation(str1, str2) {
+function getRelation (str1, str2) {
   if (str1 === str2) {
     console.warn('Two path are equal!'); // eslint-disable-line
   }
@@ -110,7 +110,7 @@ function getRelation(str1, str2) {
   return 3;
 }
 
-function getRenderArr(routes) {
+function getRenderArr (routes) {
   let renderArr = [];
   renderArr.push(routes[0]);
   for (let i = 1; i < routes.length; i += 1) {
@@ -132,7 +132,7 @@ function getRenderArr(routes) {
  * @param {string} path
  * @param {routerData} routerData
  */
-export function getRoutes(path, routerData) {
+export function getRoutes (path, routerData) {
   let routes = Object.keys(routerData).filter(
     routePath => routePath.indexOf(path) === 0 && routePath !== path,
   );
@@ -156,6 +156,26 @@ export function getRoutes(path, routerData) {
 /* eslint no-useless-escape:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/g;
 
-export function isUrl(path) {
+export function isUrl (path) {
   return reg.test(path);
+}
+
+export function getDateDiff (date) {
+  const diffSeconds = moment().diff(moment(date), 's');
+  const arrr = ['年', '个月', '星期', '天', '小时', '分钟', '秒'];
+  const arrn = [31536000, 2592000, 604800, 86400, 3600, 60, 1];
+
+  if (diffSeconds > arrn[0]) {
+    return date;
+  }
+
+  for (let i = 1; i <= 6; i++) { // eslint-disable-line
+    const inm = Math.floor(diffSeconds / arrn[i]);
+
+    if (inm !== 0) {
+      return `${inm}${arrr[i]}前`;
+    }
+  }
+
+  return date;
 }
