@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { round } from 'lodash';
 
 export function fixedZero (val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -162,20 +163,33 @@ export function isUrl (path) {
 
 export function getDateDiff (date) {
   const diffSeconds = moment().diff(moment(date), 's');
-  const arrr = ['年', '个月', '星期', '天', '小时', '分钟', '秒'];
-  const arrn = [31536000, 2592000, 604800, 86400, 3600, 60, 1];
+  const u = ['年', '个月', '星期', '天', '小时', '分钟', '秒'];
+  const t = [31536000, 2592000, 604800, 86400, 3600, 60, 1];
 
-  if (diffSeconds > arrn[0]) {
+  if (diffSeconds > t[0]) {
     return date;
   }
 
   for (let i = 1; i <= 6; i++) { // eslint-disable-line
-    const inm = Math.floor(diffSeconds / arrn[i]);
+    const inm = Math.floor(diffSeconds / t[i]);
 
     if (inm !== 0) {
-      return `${inm}${arrr[i]}前`;
+      return `${inm}${u[i]}前`;
     }
   }
 
   return date;
+}
+
+export function formatReadCount (number) {
+  const u = ['w', 'k'];
+  const t = [10000, 1000];
+
+  for (let i = 0; i <= 1; i++) { // eslint-disable-line
+    if (number >= t[i]) {
+      return `${round(number / t[i], 1).toFixed(1)}${u[i]}`;
+    }
+  }
+
+  return number;
 }

@@ -1,11 +1,12 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Form, Breadcrumb, Card, List, Tag, Icon, Avatar, Button, Pagination } from 'antd';
+import { Form, Breadcrumb, Card, List, Tag, Icon, Button, Pagination } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { parse } from 'qs';
 import { get } from 'lodash';
 import Ellipsis from 'components/Ellipsis';
+import { getDateDiff, formatReadCount } from 'utils/utils';
 import styles from './Search.less';
 
 const defaultQueryParams = {
@@ -108,13 +109,6 @@ export default class ArticleSearch extends PureComponent {
     const { article: { data, pagination }, loading } = this.props;
     const { search } = this.state;
 
-    const IconText = ({ type, text }) => (
-      <span>
-        <Icon type={type} style={{ marginRight: 8 }} />
-        {text}
-      </span>
-    );
-
     const ListContent = ({ data: article }) => (
       <div className={styles.listContent}>
         <div className={styles.description}>
@@ -133,17 +127,22 @@ export default class ArticleSearch extends PureComponent {
           </Ellipsis>
         </div>
         <div className={styles.extra}>
-          <Avatar size="small" icon="user" />
-          <Link to={`/article/list?author_id=${get(article, 'author.id')}`}>
+          <Link style={{ color: 'inherit' }} to={`/article/list?author_id=${get(article, 'author.id')}`}>
+            <Icon type="user" style={{ marginRight: 4 }} />
             {get(article, 'author.name')}
           </Link>
-          &nbsp;&nbsp;发布在&nbsp;&nbsp;
-          <Link to={`/article/${article.id}/details`}>
-            {window.location.hostname}
-            {window.location.port === 80 ? '' : `:${window.location.port}`}
-            {`/article/${article.id}/details`}
-          </Link>
-          <em>{article.updated_at}</em>
+          <span style={{ marginLeft: 12 }}>
+            <Icon type="clock-circle-o" style={{ marginRight: 4 }} />
+            {getDateDiff(article.created_at)}
+          </span>
+          <span style={{ marginLeft: 12 }}>
+            <Icon type="eye-o" style={{ marginRight: 4 }} />
+            {formatReadCount(article.current_read_count)}
+          </span>
+          <a style={{ color: 'inherit', marginLeft: 12 }}>
+            <Icon type="message" style={{ marginRight: 4 }} />
+            {0}
+          </a>
         </div>
       </div>
     );
@@ -168,11 +167,6 @@ export default class ArticleSearch extends PureComponent {
               renderItem={article => (
                 <List.Item
                   key={article.id}
-                  actions={[
-                    <IconText type="star-o" text={999} />,
-                    <IconText type="like-o" text={999} />,
-                    <IconText type="message" text={999} />,
-                  ]}
                   extra={
                     <div className={styles.listItemExtra}>
                       {article.preview && <img src={article.preview} alt="预览" />}
@@ -200,6 +194,7 @@ export default class ArticleSearch extends PureComponent {
                     }
                     description={
                       <span>
+                        <Icon type="tags-o" style={{ marginRight: 4 }} />
                         {article.tags.map(tag => (
                           <Link key={tag.id} to={`/article/list?tags[0]=${tag.id}`}>
                             <Tag>{tag.name}</Tag>

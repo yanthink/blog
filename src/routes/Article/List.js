@@ -8,7 +8,6 @@ import {
   List,
   Tag,
   Icon,
-  Avatar,
   Button,
   Pagination,
 } from 'antd';
@@ -18,7 +17,7 @@ import { get } from 'lodash';
 import TagSelect from 'components/TagSelect';
 import StandardFormRow from 'components/StandardFormRow';
 import Ellipsis from 'components/Ellipsis';
-import { getDateDiff } from 'utils/utils';
+import { getDateDiff, formatReadCount } from 'utils/utils';
 import { queryAllTags } from 'services/api';
 import styles from './List.less';
 
@@ -164,7 +163,7 @@ export default class ArticleList extends PureComponent {
           </span>
           <span style={{ marginLeft: 12 }}>
             <Icon type="eye-o" style={{ marginRight: 4 }} />
-            {article.current_read_count}
+            {formatReadCount(article.current_read_count)}
           </span>
           <a style={{ color: 'inherit', marginLeft: 12 }}>
             <Icon type="message" style={{ marginRight: 4 }} />
