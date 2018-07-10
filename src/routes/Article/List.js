@@ -12,7 +12,7 @@ import {
   Pagination,
 } from 'antd';
 import DocumentTitle from 'react-document-title';
-import { parse } from 'qs';
+import { parse, stringify } from 'qs';
 import { get } from 'lodash';
 import TagSelect from 'components/TagSelect';
 import StandardFormRow from 'components/StandardFormRow';
@@ -113,12 +113,24 @@ export default class ArticleList extends PureComponent {
   };
 
   renderLoadMore = () => {
-    const { article: { data, pagination }, loading } = this.props;
+    const { article: { data, pagination }, loading, location } = this.props;
+    const { search } = this.state;
     if (data.length === 0) {
       return null;
     }
 
     if (pagination.current && pagination.current >= loadMorePage) {
+      pagination.itemRender = (page, type, originalElement) => {
+        return (
+          <Link
+            {...originalElement.props}
+            to={`${location.pathname}?${stringify({ ...search, page })}`}
+          >
+            {type === 'page' && page}
+          </Link>
+        );
+      };
+
       return (
         <div style={{ textAlign: 'right', marginTop: 16 }}>
           <Pagination

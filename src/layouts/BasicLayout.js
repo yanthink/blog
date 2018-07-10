@@ -35,9 +35,11 @@ const query = {
   },
 };
 
+let lastPathname = window.location.pathname;
+
 @connect()
 export default class BasicLayout extends React.PureComponent {
-  getPageTitle() {
+  getPageTitle () {
     const { routerData, location } = this.props;
     const { pathname } = location;
     let title = '我的网络日志';
@@ -62,15 +64,23 @@ export default class BasicLayout extends React.PureComponent {
         search: stringify({
           keyword: value,
         }),
-      })
+      }),
     );
   };
 
-  render() {
+  render () {
+    const { pathname } = window.location;
+    /* eslint-disable */
+    if (typeof window._hmt !== 'undefined' && lastPathname !== pathname) {
+      window._hmt.push(['_trackPageview', pathname]);
+      lastPathname = pathname;
+    }
+    /* eslint-enable */
+
     const { routerData, match } = this.props;
 
     const layout = (
-      <Layout className={styles.layout}>
+      <Layout id="layout" className={styles.layout}>
         <Header className={styles.header}>
           <div>
             <div className={styles.logo} />

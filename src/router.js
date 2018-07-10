@@ -15,7 +15,7 @@ dynamic.setDefaultLoadingComponent(() => {
   return <Spin size="large" className={styles.globalSpin} />;
 });
 
-function loggedIn(currentAuthority) {
+function loggedIn (currentAuthority) {
   if (currentAuthority === 'guest' || !getToken()[0]) {
     return false;
   }
@@ -27,9 +27,13 @@ const jsMap = [];
 if (process.env.NODE_ENV !== 'production') {
   cssMap.unshift('/_debugbar/assets/stylesheets');
   jsMap.unshift('/_debugbar/assets/javascript', '/_debugbar/render');
+} else if (location.host === 'www.einsition.com') {
+  window._hmt = window._hmt || []; // eslint-disable-line
+  // 百度统计
+  jsMap.push('https://hm.baidu.com/hm.js?ac1bc08008f195f8b3c753b4b718104b');
 }
 
-function RouterConfig({ history, app }) {
+function RouterConfig ({ history, app }) {
   const routerData = getRouterData(app);
   const BasicLayout = routerData['/'].component;
   const AdminAuthLayout = routerData['/admin/auth'].component;
