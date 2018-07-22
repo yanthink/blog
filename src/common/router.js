@@ -81,6 +81,15 @@ export const getRouterData = app => {
     '/article/:id/details': {
       component: dynamicWrapper(app, ['article'], () => import('routes/Article/Details')),
     },
+    '/exception/403': {
+      component: dynamicWrapper(app, [], () => import('routes/Exception/403')),
+    },
+    '/exception/404': {
+      component: dynamicWrapper(app, [], () => import('routes/Exception/404')),
+    },
+    '/exception/500': {
+      component: dynamicWrapper(app, [], () => import('routes/Exception/500')),
+    },
     '/admin': {
       component: dynamicWrapper(app, ['Admin/user', 'Admin/login'], () =>
         import('layouts/Admin/BasicLayout')

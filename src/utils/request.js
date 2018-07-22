@@ -23,21 +23,25 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-function checkStatus(response) {
+function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
 
   const { dispatch } = store;
   const { status } = response;
+  const pathnamePrefix = window.location.pathname.replace(/^(\/admin)?.*$/, '$1');
+
   if (status === 401) {
     dispatch({ type: 'adminLogin/logout' });
   } else if (status === 403) {
-    dispatch(routerRedux.push('/admin/exception/403'));
-  } else if (status <= 504 && status >= 500) {
-    dispatch(routerRedux.push('/admin/exception/500'));
+    dispatch(routerRedux.push(`${pathnamePrefix}/exception/403`));
+  } else if (status === 404) {
+    dispatch(routerRedux.push(`${pathnamePrefix}/exception/404`));
+  } else if (status >= 500 && status <= 504) {
+    dispatch(routerRedux.push(`${pathnamePrefix}/exception/500`));
   } else if (status >= 404 && status < 422) {
-    dispatch(routerRedux.push('/admin/exception/404'));
+    //
   }
 
   const errorText = codeMessage[response.status] || response.statusText;
@@ -58,7 +62,7 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default async function request(url, options) {
+export default async function request (url, options) {
   const defaultOptions = {
     method: 'GET',
     credentials: 'include',
@@ -96,7 +100,8 @@ export default async function request(url, options) {
       } else if (debugBarId && phpdebugbar.openHandler) {
         phpdebugbar.loadDataSet(debugBarId, '(ajax)');
       }
-    } catch (e) {}
+    } catch (e) {
+    }
   }
   /* eslint-enable */
 
