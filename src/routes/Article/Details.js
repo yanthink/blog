@@ -5,11 +5,11 @@ import DocumentTitle from 'react-document-title';
 import { Breadcrumb, Icon, Spin, Tag } from 'antd';
 import { get } from 'lodash';
 import marked from 'marked';
-import Prism from 'utils/prism';
+import Prism from 'prismjs';
+import { dynamicLoad, getDateDiff } from 'utils/utils';
 import { queryArticleDetails } from 'services/api';
 import 'components/SimpleMDEEditor/style.less';
 import styles from './Details.less';
-import { getDateDiff } from '../../utils/utils';
 
 @connect(({ article, loading }) => ({ article, loading }))
 export default class ArticleDetails extends PureComponent {
@@ -18,13 +18,28 @@ export default class ArticleDetails extends PureComponent {
   };
 
   async componentWillMount () {
-    const { data: article } = await queryArticleDetails(this.props.match.params.id, {
-      include: 'author,tags',
-    });
+    this.queryPromise = queryArticleDetails(this.props.match.params.id, { include: 'author,tags' });
+    const { data: article } = await this.queryPromise;
+    this.setState({ article }, () => Prism.highlightAllUnder(this.markdownDomNode));
+  }
 
-    this.setState({
-      article,
-    }, () => Prism.highlightAllUnder(this.markdownDomNode));
+  async componentDidMount () {
+    await dynamicLoad('/fluidbox/jquery.min.js');
+    await dynamicLoad('/fluidbox/jquery.ba-throttle-debounce.min.js');
+    await dynamicLoad('/fluidbox/jquery.fluidbox.min.js');
+    await dynamicLoad('/fluidbox/fluidbox.min.css');
+
+    await this.queryPromise;
+
+    /* eslint-disable */
+    $(this.markdownDomNode).find('img').each(function() {
+      $(this).wrap('<a href="' + $(this).attr('src') + '" class="fluidbox"></a>');
+    }).promise().done(() => $('a.fluidbox').fluidbox());
+    /* eslint-enable */
+  }
+
+  componentWillUnmount () {
+    $('a.fluidbox').data('plugin_fluidbox') && $('a.fluidbox').data('plugin_fluidbox').destroy(); // eslint-disable-line
   }
 
   handleRefMount = domNode => {

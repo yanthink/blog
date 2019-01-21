@@ -3,7 +3,35 @@ const path = require('path');
 
 export default {
   entry: 'src/index.js',
-  extraBabelPlugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }]],
+  extraBabelPlugins: [
+    ['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }],
+    [
+      'prismjs',
+      {
+        languages: [
+          'css',
+          'javascript',
+          'bash',
+          'ini',
+          'java',
+          'json',
+          'less',
+          'php',
+          'jsx',
+          'tsx',
+          'sass',
+          'scss',
+          'sql',
+          'stylus',
+          'typescript',
+          'yaml',
+        ],
+        plugins: ['line-numbers'],
+        theme: 'okaidia',
+        css: true,
+      },
+    ],
+  ],
   env: {
     development: {
       extraBabelPlugins: ['dva-hmr'],

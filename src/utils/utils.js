@@ -193,3 +193,33 @@ export function formatReadCount (number) {
 
   return number;
 }
+
+const dynamicLoaded = [];
+
+export function dynamicLoad (srcs) {
+  const srcList = Array.isArray(srcs) ? srcs : srcs.split(/\s+/);
+  return Promise.all(srcList.map(src => {
+    if (!dynamicLoaded[src]) {
+      dynamicLoaded[src] = new Promise((resolve, reject) => {
+        if (src.indexOf('.css') > 0) {
+          const style = document.createElement('link');
+          style.rel = 'stylesheet';
+          style.type = 'text/css';
+          style.href = src;
+          style.onload = e => resolve(e);
+          style.onerror = e => reject(e);
+          document.head.appendChild(style);
+        } else {
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = src;
+          script.onload = e => resolve(e);
+          script.onerror = e => reject(e);
+          document.head.appendChild(script);
+        }
+      });
+    }
+
+    return dynamicLoaded[src];
+  }));
+}

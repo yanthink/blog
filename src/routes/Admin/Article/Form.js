@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cookie from 'cookie';
 import marked from 'marked';
-import Prism from 'utils/prism';
+import Prism from 'prismjs';
 import { Form, Input, Select, Button, Radio, Modal, Icon, Upload, message } from 'antd';
 import SimpleMDEEditor from 'components/SimpleMDEEditor/index';
 import { getAuthorization, getToken } from 'utils/authority';
