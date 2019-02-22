@@ -18,10 +18,13 @@
 - debugbar;
 
 ## 后台截图
-![file](https://api.einsition.com/storage/screenshot/WX20180627-175615.png)
-![file](https://api.einsition.com/storage/screenshot/WX20180627-175640.png)
-![file](https://api.einsition.com/storage/screenshot/WX20180627-175811.png)
-![file](https://api.einsition.com/storage/screenshot/WX20180627-175828.png)
+![文章列表](http://qiniu.einsition.com/article/a27/32077943eb94be253f1ef4bfee6a1ad7.png)
+
+![文章详情](http://qiniu.einsition.com/article/a27/afb57458fedc4d53626c9b6e6f26136d.png)
+
+![文章发布](http://qiniu.einsition.com/article/a27/e800fb0dc80eb18d7d437ed61c283149.png)
+
+![文章预览](http://qiniu.einsition.com/article/a27/3ef3cf768ebdffcba8eb42bf94a22e7f.png)
 
 ## 开发环境部署/安装
 
@@ -58,3 +61,9 @@ proxy: {
 ```shell
 $ npm start # visit http://localhost:8000
 ```
+
+后台地址：http://localhost:8000/admin
+
+## 小程序二维码
+
+![file](http://qiniu.einsition.com/article/a27/126393085b4a7553b146d7099fa543fe.jpeg)
