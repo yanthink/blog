@@ -17,7 +17,7 @@ const defaultQueryParams = {
   include: 'author,tags',
   pageSize: 5,
 };
-const loadMorePage = 20;
+const loadMorePage = 0;
 
 @Form.create()
 @connect(({ adminArticle, loading }) => ({ adminArticle, loading }))
@@ -240,8 +240,8 @@ export default class ArticleList extends PureComponent {
                       删除
                     </span>
                   </Popconfirm>,
-                  <IconText type="like-o" text={999} />,
-                  <IconText type="message" text={999} />,
+                  <IconText type="like-o" text={article.like_count} />,
+                  <IconText type="message" text={article.comment_count} />,
                 ]}
                 extra={
                   <div className={styles.listItemExtra}>
