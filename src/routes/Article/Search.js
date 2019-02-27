@@ -6,7 +6,7 @@ import DocumentTitle from 'react-document-title';
 import { parse } from 'qs';
 import { get } from 'lodash';
 import Ellipsis from 'components/Ellipsis';
-import { getDateDiff, formatReadCount } from 'utils/utils';
+import { showTime, formatReadCount } from 'utils/utils';
 import styles from './Search.less';
 
 const defaultQueryParams = {
@@ -133,7 +133,7 @@ export default class ArticleSearch extends PureComponent {
           </Link>
           <span style={{ marginLeft: 12 }}>
             <Icon type="clock-circle-o" style={{ marginRight: 4 }} />
-            {getDateDiff(article.created_at)}
+            {showTime(article.created_at)}
           </span>
           <span style={{ marginLeft: 12 }}>
             <Icon type="eye-o" style={{ marginRight: 4 }} />

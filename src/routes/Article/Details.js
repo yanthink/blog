@@ -6,7 +6,7 @@ import { Breadcrumb, Icon, Spin, Tag } from 'antd';
 import { get } from 'lodash';
 import marked from 'marked';
 import Prism from 'prismjs';
-import { dynamicLoad, getDateDiff } from 'utils/utils';
+import { dynamicLoad, showTime } from 'utils/utils';
 import { queryArticleDetails } from 'services/api';
 import 'components/SimpleMDEEditor/style.less';
 import styles from './Details.less';
@@ -72,7 +72,7 @@ export default class ArticleDetails extends PureComponent {
               <span>
                 于
                 <Icon type="clock-circle-o" style={{ margin: '0 4px' }} />
-                {getDateDiff(article.created_at)}
+                {showTime(article.created_at)}
               </span>
               <span style={{ margin: '0 6px' }}>⋅</span>
               <span>

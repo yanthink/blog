@@ -73,7 +73,18 @@ export async function queryUserRoles(id, params) {
 }
 
 export async function userAssignRoles(id, params) {
-  return request(`/api/admin/user/${id}/assign-roles`, {
+  return request(`/api/admin/user/${id}/assign_roles`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function queryUserPermissions (id, params) {
+  return request(`/api/admin/user/${id}/permissions?${stringify(params)}`);
+}
+
+export async function userAssignPermissions (id, params) {
+  return request(`/api/admin/user/${id}/assign_permissions`, {
     method: 'POST',
     body: params,
   });
@@ -104,7 +115,7 @@ export async function removeRole(id) {
 }
 
 export async function roleAssignPermissions(id, params) {
-  return request(`/api/admin/role/${id}/assign-permissions`, {
+  return request(`/api/admin/role/${id}/assign_permissions`, {
     method: 'POST',
     body: params,
   });

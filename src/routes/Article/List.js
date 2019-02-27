@@ -17,7 +17,7 @@ import { get } from 'lodash';
 import TagSelect from 'components/TagSelect';
 import StandardFormRow from 'components/StandardFormRow';
 import Ellipsis from 'components/Ellipsis';
-import { getDateDiff, formatReadCount } from 'utils/utils';
+import { showTime, formatReadCount } from 'utils/utils';
 import { queryAllTags } from 'services/api';
 import styles from './List.less';
 
@@ -171,7 +171,7 @@ export default class ArticleList extends PureComponent {
           </Link>
           <span style={{ marginLeft: 12 }}>
             <Icon type="clock-circle-o" style={{ marginRight: 4 }} />
-            {getDateDiff(article.created_at)}
+            {showTime(article.created_at)}
           </span>
           <span style={{ marginLeft: 12 }}>
             <Icon type="eye-o" style={{ marginRight: 4 }} />
@@ -179,7 +179,7 @@ export default class ArticleList extends PureComponent {
           </span>
           <a style={{ color: 'inherit', marginLeft: 12 }}>
             <Icon type="message" style={{ marginRight: 4 }} />
-            {0}
+            {article.comment_count}
           </a>
         </div>
       </div>

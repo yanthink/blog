@@ -2,9 +2,10 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Card, Form, Row, Col, Input, Button, Table, Divider, message } from 'antd';
 import PageHeaderLayout from 'layouts/Admin/PageHeaderLayout';
-import { queryUserRoles } from 'services/Admin/api';
+import { queryUserRoles, queryUserPermissions } from 'services/Admin/api';
 import ModalForm from './ModalForm';
 import ModalAssignRoles from './ModalAssignRoles';
+import ModalAssignPermissions from './ModalAssignPermissions';
 import styles from './List.less';
 
 const FormItem = Form.Item;
@@ -19,11 +20,13 @@ export default class List extends PureComponent {
     modalVisible: false,
     currentUser: {},
     modalAssignRolesVisible: false,
+    modalAssignPermissionsVisible: false,
     currentRoles: [],
+    currentPermissions: [],
     search: {},
   };
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch({
       type: 'adminUser/fetch',
       payload: {
@@ -116,6 +119,15 @@ export default class List extends PureComponent {
     });
   };
 
+  handleAssignPermissions = async user => {
+    const { data: currentPermissions } = await queryUserPermissions(user.id);
+    this.setState({
+      currentUser: user,
+      currentPermissions,
+      modalAssignPermissionsVisible: true,
+    });
+  };
+
   toggleModalVisible = () => {
     const { modalVisible } = this.state;
     this.setState({
@@ -130,7 +142,14 @@ export default class List extends PureComponent {
     });
   };
 
-  renderSearchForm() {
+  toggleModalAssignPermissionsVisible = () => {
+    const { modalAssignPermissionsVisible } = this.state;
+    this.setState({
+      modalAssignPermissionsVisible: !modalAssignPermissionsVisible,
+    });
+  };
+
+  renderSearchForm () {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -162,14 +181,16 @@ export default class List extends PureComponent {
     );
   }
 
-  render() {
+  render () {
     const { adminUser: { data, pagination }, loading, dispatch } = this.props;
     const {
       modalType,
       modalVisible,
       modalAssignRolesVisible,
+      modalAssignPermissionsVisible,
       currentUser,
       currentRoles,
+      currentPermissions,
     } = this.state;
 
     const columns = [
@@ -199,7 +220,9 @@ export default class List extends PureComponent {
           <Fragment>
             <a onClick={() => this.handleEdit(record)}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => this.handleAssignRoles(record)}>分配角色</a>
+            <a disabled={!record.is_admin} onClick={() => this.handleAssignRoles(record)}>分配角色</a>
+            <Divider type="vertical" />
+            <a disabled={!record.is_admin} onClick={() => this.handleAssignPermissions(record)}>分配权限</a>
           </Fragment>
         ),
       },
@@ -245,6 +268,26 @@ export default class List extends PureComponent {
       onCancel: this.toggleModalAssignRolesVisible,
     };
 
+    const modalAssignPermissionsProps = {
+      currentPermissions,
+      title: `给【${currentUser.username}】用户分配权限`,
+      visible: modalAssignPermissionsVisible,
+      width: 1000,
+      confirmLoading: loading.effects['user/assignPermissions'],
+      onOk: payload => {
+        dispatch({
+          type: 'adminUser/assignPermissions',
+          id: currentUser.id,
+          payload,
+          callback: () => {
+            message.success('权限分配成功');
+            this.toggleModalAssignPermissionsVisible();
+          },
+        });
+      },
+      onCancel: this.toggleModalAssignPermissionsVisible,
+    };
+
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -267,8 +310,11 @@ export default class List extends PureComponent {
             />
           </div>
         </Card>
-        <ModalForm {...modalFormPorps} />
-        <ModalAssignRoles {...modalAssignRolesProps} />
+        {modalVisible && <ModalForm {...modalFormPorps} />}
+        {modalAssignRolesVisible && <ModalAssignRoles {...modalAssignRolesProps} />}
+        {modalAssignPermissionsVisible && (
+          <ModalAssignPermissions {...modalAssignPermissionsProps} />
+        )}
       </PageHeaderLayout>
     );
   }

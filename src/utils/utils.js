@@ -161,13 +161,18 @@ export function isUrl (path) {
   return reg.test(path);
 }
 
-export function getDateDiff (date) {
-  const diffSeconds = moment().diff(moment(date), 's');
+export function showTime (time, level = 4) {
+  const mTime = moment(time);
+  const diffSeconds = moment().diff(mTime, 's');
   const u = ['年', '个月', '星期', '天', '小时', '分钟', '秒'];
   const t = [31536000, 2592000, 604800, 86400, 3600, 60, 1];
 
-  if (diffSeconds > t[0]) {
-    return date;
+  if (diffSeconds > t[level]) {
+    if (moment().year() === mTime.year()) {
+      return mTime.format('MM-DD HH:mm');
+    }
+
+    return mTime.format('YYYY-MM-DD HH:mm');
   }
 
   for (let i = 1; i <= 6; i++) { // eslint-disable-line
@@ -178,7 +183,7 @@ export function getDateDiff (date) {
     }
   }
 
-  return date;
+  return time;
 }
 
 export function formatReadCount (number) {

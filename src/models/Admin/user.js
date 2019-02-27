@@ -5,6 +5,7 @@ import {
   updateUser,
   removeUser,
   userAssignRoles,
+  userAssignPermissions,
 } from 'services/Admin/api';
 
 export default {
@@ -43,6 +44,10 @@ export default {
     },
     * assignRoles({ id, payload, callback }, { call }) {
       yield call(userAssignRoles, id, payload);
+      if (callback) callback();
+    },
+    * assignPermissions({ id, payload, callback }, { call }) {
+      yield call(userAssignPermissions, id, payload);
       if (callback) callback();
     },
   },
